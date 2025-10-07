@@ -1,3 +1,5 @@
+""" Define two classes inherited from general_purpose_python_modules.cmd_utils.cmd_isochrone_interpolator. 
+This file should be saved in the same folder as general_purpose_python_modules.cmd_utils.cmd_isochrone_interpolator."""
 from general_purpose_python_modules.cmd_utils.modified_cmd_isochrone_interpolator import IsochroneFileIterator as iterator
 from general_purpose_python_modules.cmd_utils.modified_cmd_isochrone_interpolator import CMDInterpolator as interpolator
 import numpy
