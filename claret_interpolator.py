@@ -81,9 +81,9 @@ class ClaretInterpolator(interpolator):
         )
 
 
-class IsochroneFileIterator(iterator):
+class ClaretFileIterator(iterator):
     """
-    Isochrone File Iterator Just like the IsochroneFileIterator in original general_purpose_python_modules with different
+    Claret File Iterator Just like the IsochroneFileIterator in original general_purpose_python_modules with different
     strings to be checked by the function. Since the data file from claret data has different header and columns.
     """
 
