@@ -1,6 +1,7 @@
 from astropy import units as u
 from astropy import constants as c
 
+
 def semimajoraxis(M1, M2, Ps):
     """Function of semimajor calculation
 
@@ -12,11 +13,12 @@ def semimajoraxis(M1, M2, Ps):
         Semimajor axis of the system.
 
     """
-    a = (c.G*(M1+M2)*Ps**2/(4*np.pi**2))**(1/3)
+    a = (c.G * (M1 + M2) * Ps**2 / (4 * np.pi**2)) ** (1 / 3)
     return a
 
-def P_Urel(M1,M2,a,e):
-     """Function to calculate P/U_rel
+
+def P_Urel(M1, M2, a, e):
+    """Function to calculate P/U_rel
 
     Args:
         M1: The mass of one object.
@@ -28,8 +30,9 @@ def P_Urel(M1,M2,a,e):
         P/U_rel, make sure to decompose when using astropy.
 
     """
-    P_Urel = (3*c.G*(M1+M2)) / (c.c**2 * a * (1 - e**2))
+    P_Urel = (3 * c.G * (M1 + M2)) / (c.c**2 * a * (1 - e**2))
     return P_Urel
+
 
 def P_Utide(M1, M2, e, R, logk2, a):
     """Function to calculate one term of P/U_tide
@@ -42,15 +45,16 @@ def P_Utide(M1, M2, e, R, logk2, a):
 
     Returns:
         One term of P/U_tide, make sure to decompose when using astropy.
-        
+
     Example:
         P_Utide(star1_parameter) + P_Utide(star2_parameter)
 
     """
     k2 = 10**logk2
-    f_e = (1 + 1.5*e**2 + 0.125*e**4) / (1 - e**2)**5
-    Ct = (R/a)**5 * (M2/M1) * 15 * f_e
-    return k2*Ct
+    f_e = (1 + 1.5 * e**2 + 0.125 * e**4) / (1 - e**2) ** 5
+    Ct = (R / a) ** 5 * (M2 / M1) * 15 * f_e
+    return k2 * Ct
+
 
 def P_Urot(e, P, k2, R, a, M1, M2, w_r):
     """Function to calculate one term of P/U_rot
@@ -66,19 +70,20 @@ def P_Urot(e, P, k2, R, a, M1, M2, w_r):
 
     Returns:
         One term of P/U_rot, make sure to decompose when using astropy.
-        
+
     Example:
         P_Urot(star1_parameter) + P_Urot(star2_parameter)
 
     """
-    g = (1 - e**2)**(-2)
-    w_k = 2*np.pi/P
-    return k2 * (R/a)**5*(1+M2/M1)*g*(w_r/w_k)**2
+    g = (1 - e**2) ** (-2)
+    w_k = 2 * np.pi / P
+    return k2 * (R / a) ** 5 * (1 + M2 / M1) * g * (w_r / w_k) ** 2
+
 
 def getU(P_Urel, P_Utide, P_Urot, P):
     """Function to calcualte apsidal precession period. Make sure every parameter is '.decompes()' after using astropy
     Args:
-        P_Urel: The calculated P/U_rel. 
+        P_Urel: The calculated P/U_rel.
         P_Utide: The exact calculated P/U_tide, which is P_Utide(star1_parameter) + P_Utide(star2_parameter).
         P_Urot: The exact calculated P/U_rot, which is P_Urot(star1_parameter) + P_Urot(star2_parameter).
     Rturns:
@@ -87,4 +92,4 @@ def getU(P_Urel, P_Utide, P_Urot, P):
     """
     num = P
     denom = P_Urel + P_Utide + P_Urot
-    return num/denom
+    return num / denom
