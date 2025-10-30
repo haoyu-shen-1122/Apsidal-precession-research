@@ -1,6 +1,6 @@
 from astropy import units as u
 from astropy import constants as c
-
+import numpy as np
 
 def semimajoraxis(M1, M2, Ps):
     """Function of semimajor calculation
@@ -56,7 +56,7 @@ def P_Utide(M1, M2, e, R, logk2, a):
     return k2 * Ct
 
 
-def P_Urot(e, P, k2, R, a, M1, M2, w_r):
+def P_Urot(e, P, logk2, R, a, M1, M2, w_r):
     """Function to calculate one term of P/U_rot
 
     Args:
@@ -75,6 +75,7 @@ def P_Urot(e, P, k2, R, a, M1, M2, w_r):
         P_Urot(star1_parameter) + P_Urot(star2_parameter)
 
     """
+    k2 = 10**logk2
     g = (1 - e**2) ** (-2)
     w_k = 2 * np.pi / P
     return k2 * (R / a) ** 5 * (1 + M2 / M1) * g * (w_r / w_k) ** 2
@@ -90,6 +91,12 @@ def getU(P_Urel, P_Utide, P_Urot, P):
         Apsidal precession
 
     """
-    num = P
+    Pq = P * u.day if not hasattr(P, "unit") else P.to(u.day)
     denom = P_Urel + P_Utide + P_Urot
-    return num / denom
+    if hasattr(denom, "unit"): 
+        denom_q = denom
+    else: 
+        denom_q = denom * (u.day / u.yr)
+    Usyn = Pq / denom_q
+    U_syn = Usyn.to(u.yr)
+    return U_syn
